@@ -4,9 +4,9 @@ import { cookies } from "next/headers";
 import { UserType } from "../_types/user";
 
 //? Set session cookie
-export const setSession = async (userId: string) => {
+export const setSession = async (userId: number) => {
     const cookieStore = await cookies();
-    cookieStore.set("session", userId, {
+    cookieStore.set("session", String(userId), {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,
@@ -16,11 +16,11 @@ export const setSession = async (userId: string) => {
 
 
 //? Get session cookie
-export const getSession = async (): Promise< string | null > =>{
+export const getSession = async (): Promise< number | null > =>{
     const cookieStore = await cookies();
     const userId =  cookieStore.get("session")?.value;
     if(!userId) return null;
-    return userId;
+    return  Number(userId);
 }
 
 //? Delete session cookie
